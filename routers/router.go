@@ -11,10 +11,11 @@ import (
 	"cherish-time-go/controllers"
 
 	"github.com/astaxie/beego"
+	"cherish-time-go/controllers/weapp/time"
 )
 
 func init() {
-	ns := beego.NewNamespace("/v1",
+	ns := beego.NewNamespace("/api/weapp/v1/",
 		beego.NSNamespace("/object",
 			beego.NSInclude(
 				&controllers.ObjectController{},
@@ -23,6 +24,12 @@ func init() {
 		beego.NSNamespace("/user",
 			beego.NSInclude(
 				&controllers.UserController{},
+			),
+		),
+
+		beego.NSNamespace("/time",
+			beego.NSRouter(
+				"/detail",&timeComtroller.TimeDetailController{},"*:Detail",
 			),
 		),
 	)
