@@ -4,7 +4,7 @@ import (
 	"cherish-time-go/controllers"
 	"github.com/astaxie/beego/validation"
 	"cherish-time-go/logic/weapp/time"
-	)
+)
 
 type TimeDetailController struct {
 	controllers.Controller
@@ -23,8 +23,9 @@ func (c *TimeDetailController) Detail() {
 	valid := validation.Validation{}
 	valid.Valid(&inputData)
 
-	timeLogic.GetDetail(inputData.Id)
+	timeLogic := timeLogic.TimeLogic{}
+	logicRet := timeLogic.GetDetail(inputData.Id)
 
-	c.Data["json"] = inputData.Id
+	c.Data["json"] = controllers.RetData{0,"success",logicRet}
 	c.ServeJSON()
 }

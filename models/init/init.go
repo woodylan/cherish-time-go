@@ -30,7 +30,7 @@ func Init() {
 	orm.RegisterDataBase("default", "mysql", dsn)
 
 	//注册模型
-	orm.RegisterModel(new(TimeModel.Time))
+	orm.RegisterModelWithPrefix("tb_", new(TimeModel.Time))
 }
 
 func TableName(name string) string {
