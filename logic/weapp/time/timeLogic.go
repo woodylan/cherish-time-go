@@ -2,27 +2,27 @@ package timeLogic
 
 import (
 	"cherish-time-go/models/Time"
-	"fmt"
-)
+	"cherish-time-go/modules/util"
+	"time"
+	"cherish-time-go/define/common"
+	)
 
 type TimeLogic struct {
 }
 
 type TimeDetail struct {
-	Id         string `json:"id"`
-	Name       string `json:"name"`
-	Type       uint8   `json:"type"`
-	Color      string `json:"color"`
-	Data       string `json:"data"`
-	Days       string `json:"days"`
-	Remark     string `json:"remark"`
-	CreateTime string `json:"createTime"`
+	Id         string   `json:"id"`
+	Name       string   `json:"name"`
+	Type       uint8    `json:"type"`
+	Color      []string `json:"color"`
+	Date       string   `json:"date"`
+	Days       int64    `json:"days"`
+	Remark     string   `json:"remark"`
+	CreateTime int64    `json:"createTime"`
 }
 
 func (this *TimeLogic) GetDetail(id string) (timeDetail TimeDetail) {
 	model := TimeModel.GetById(id)
-
-	fmt.Println(model)
 
 	timeDetail = this.renderDetail(model)
 
@@ -30,8 +30,30 @@ func (this *TimeLogic) GetDetail(id string) (timeDetail TimeDetail) {
 }
 
 func (this *TimeLogic) renderDetail(model TimeModel.Time) (timeDetail TimeDetail) {
+	color := []string{};
+	if len(model.Color) > 0 {
+		util.JsonDecode(model.Color, &color)
+	}
+
+	nowTimeUnix := time.Now().Unix()
+	dateTime, _ := time.Parse("20060102", model.Date)
+	dateTimeUnix := dateTime.Unix()
+	days := int64(0)
+	if model.Type == common.TIME_TYPE_DESC {
+		days = util.DaysDiff(nowTimeUnix, dateTimeUnix)
+	} else if model.Type == common.TIME_TYPE_ASC {
+		days = util.DaysDiff(dateTimeUnix, nowTimeUnix)
+	}
+
 	timeDetail.Id = model.Id
 	timeDetail.Name = model.Name
 	timeDetail.Type = model.Type
+	timeDetail.Color = color
+	timeDetail.Date = model.Date
+	timeDetail.Days = days
+	timeDetail.Remark = model.Remark
+	timeDetail.CreateTime = model.CreateTime
 	return
 }
+
+

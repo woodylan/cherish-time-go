@@ -8,13 +8,12 @@ import (
 type Time struct {
 	Id         string `orm:"column(id);pk"`
 	Name       string
+	UserId     string
 	Type       uint8
 	Date       string
 	Color      string
-	Data       string
-	Days       string
 	Remark     string
-	CreateTime string
+	CreateTime int64
 }
 
 func (a *Time) TableName() string {
@@ -23,12 +22,9 @@ func (a *Time) TableName() string {
 
 func GetById(id string) (Time) {
 	o := orm.NewOrm()
-	u := Time{Id: id}
-	//err := o.Read(&u)
-	o.Read(&u)
+	ret := Time{Id: id}
 
-	//fmt.Printf("ERR: %v\n", err)
-	//fmt.Println(u.Type)
+	o.Read(&ret)
 
-	return u
+	return ret
 }

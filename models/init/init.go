@@ -5,8 +5,7 @@ import (
 	"net/url"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
-	"fmt"
-	"cherish-time-go/models/Time"
+		"cherish-time-go/models/Time"
 )
 
 func Init() {
@@ -20,7 +19,6 @@ func Init() {
 		dbPort = "3306"
 	}
 	dsn := dbUser + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?charset=utf8"
-	fmt.Println(dsn)
 
 	if timezone != "" {
 		dsn = dsn + "&loc=" + url.QueryEscape(timezone)
