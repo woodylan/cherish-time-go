@@ -1,12 +1,16 @@
 package TimeModel
 
 import (
-	"github.com/astaxie/beego/orm"
+	"cherish-time-go/db"
+	"fmt"
 )
+
+//var db *gorm.DB
 
 // Model Struct
 type Time struct {
-	Id         string `orm:"column(id);pk"`
+	//gorm.Model
+	Id         string `gorm:"column(id);pk"`
 	Name       string
 	UserId     string
 	Type       uint8
@@ -17,14 +21,14 @@ type Time struct {
 }
 
 func (a *Time) TableName() string {
-	return "time"
+	return "tb_time"
 }
 
 func GetById(id string) (Time) {
-	o := orm.NewOrm()
 	ret := Time{Id: id}
 
-	o.Read(&ret)
+	db.Conn.Take(&ret)
+	fmt.Println(ret)
 
 	return ret
 }

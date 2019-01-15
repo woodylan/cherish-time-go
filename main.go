@@ -4,7 +4,7 @@ import (
 	_ "cherish-time-go/routers"
 
 	"github.com/astaxie/beego"
-	"cherish-time-go/models/init"
+	"cherish-time-go/db"
 )
 
 func main() {
@@ -13,6 +13,11 @@ func main() {
 		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
 	}
 
-	initModel.Init()
+	db, err := db.Connect()
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer db.Close()
 	beego.Run()
 }

@@ -8,15 +8,16 @@ import (
 
 type TimeDetailController struct {
 	controllers.Controller
-	InputData InputData
 }
 
-type InputData struct {
+type inputData struct {
 	Id string `data:"id" valid:"Required"`
 }
 
 func (c *TimeDetailController) Detail() {
-	inputData := InputData{}
+	inputData := struct {
+		Id string `data:"id" valid:"Required"`
+	}{}
 	c.GetData(&inputData)
 	c.Valid(&inputData)
 
@@ -26,6 +27,6 @@ func (c *TimeDetailController) Detail() {
 	timeLogic := timeLogic.TimeLogic{}
 	logicRet := timeLogic.GetDetail(inputData.Id)
 
-	c.Data["json"] = controllers.RetData{0,"success",logicRet}
+	c.Data["json"] = controllers.RetData{0, "success", logicRet}
 	c.ServeJSON()
 }
