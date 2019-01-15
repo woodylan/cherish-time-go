@@ -2,14 +2,10 @@ package TimeModel
 
 import (
 	"cherish-time-go/db"
-	"fmt"
 )
-
-//var db *gorm.DB
 
 // Model Struct
 type Time struct {
-	//gorm.Model
 	Id         string `gorm:"column(id);pk"`
 	Name       string
 	UserId     string
@@ -17,18 +13,22 @@ type Time struct {
 	Date       string
 	Color      string
 	Remark     string
+
 	CreateTime int64
+	CreatedAt int64 `gorm:"column(create_time)"`
+	UpdatedAt int64 `gorm:"column(update_time)"`
+	DeletedAt *int64
 }
 
 func (a *Time) TableName() string {
 	return "tb_time"
 }
 
-func GetById(id string) (Time) {
+func GetById(id string) (Time, error) {
 	ret := Time{Id: id}
 
-	db.Conn.Take(&ret)
-	fmt.Println(ret)
+	res := db.Conn.Take(&ret)
+	err := res.Error
 
-	return ret
+	return ret, err
 }

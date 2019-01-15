@@ -5,7 +5,8 @@ import (
 	"cherish-time-go/modules/util"
 	"time"
 	"cherish-time-go/define/common"
-	)
+	"github.com/astaxie/beego"
+)
 
 type TimeLogic struct {
 }
@@ -22,7 +23,10 @@ type TimeDetail struct {
 }
 
 func (this *TimeLogic) GetDetail(id string) (timeDetail TimeDetail) {
-	model := TimeModel.GetById(id)
+	model, err := TimeModel.GetById(id)
+	if err != nil {
+		beego.BeeLogger.Error("Error finding user with id %s: %v", id, err.Error())
+	}
 
 	timeDetail = this.renderDetail(model)
 
@@ -55,5 +59,3 @@ func (this *TimeLogic) renderDetail(model TimeModel.Time) (timeDetail TimeDetail
 	timeDetail.CreateTime = model.CreateTime
 	return
 }
-
-
