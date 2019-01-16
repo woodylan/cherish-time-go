@@ -34,7 +34,6 @@ func (c *Controller) Prepare() {
 
 //参数校验
 func (c *Controller) Valid(inputData interface{}) {
-
 	valid := validation.Validation{}
 	b, err := valid.Valid(inputData)
 	if err != nil {
@@ -43,19 +42,10 @@ func (c *Controller) Valid(inputData interface{}) {
 	if !b {
 		// 处理抛出验证不通过
 		for _, err := range valid.Errors {
-			c.ThrowApi(-1, err.Key+" "+err.Message, "")
+			util.ThrowApi(c.Ctx, -1, err.Key+" "+err.Message)
 			log.Println(err.Key, err.Message)
 		}
 	}
-}
-
-func (c *Controller) ThrowApi(code int, msg string, data interface{}) {
-	var retData RetData
-	retData.Code = code
-	retData.Msg = msg
-
-	c.Data["json"] = retData
-	c.ServeJSON()
 }
 
 func (c *Controller) GetData(RequestData interface{}) {

@@ -13,11 +13,12 @@ func main() {
 		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
 	}
 
+	//连接数据库
 	db, err := db.Connect()
 	if err != nil {
 		panic(err.Error())
 	}
-
 	defer db.Close()
+
 	beego.Run()
 }
