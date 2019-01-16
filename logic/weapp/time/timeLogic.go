@@ -6,6 +6,7 @@ import (
 	"time"
 	"cherish-time-go/define/common"
 	"github.com/astaxie/beego"
+	"cherish-time-go/controllers"
 )
 
 type TimeLogic struct {
@@ -29,6 +30,18 @@ func (this *TimeLogic) GetDetail(id string) (timeDetail TimeDetail) {
 	}
 
 	timeDetail = this.renderDetail(model)
+
+	return
+}
+
+func (this *TimeLogic) GetList(perPage, currentPage int) (page controllers.Page) {
+	models, sumCount, err := TimeModel.GetByPage("922611e8adad83fc", perPage, currentPage)
+	if err != nil {
+		beego.BeeLogger.Error("Error get users error: %v", err.Error())
+	}
+
+	page.RendPage(sumCount, perPage, currentPage)
+	this.renderList(&page, models, sumCount)
 
 	return
 }
@@ -58,4 +71,16 @@ func (this *TimeLogic) renderDetail(model TimeModel.Time) (timeDetail TimeDetail
 	timeDetail.Remark = model.Remark
 	timeDetail.CreateTime = model.CreateTime
 	return
+}
+
+func (this *TimeLogic) renderList(page *controllers.Page, models []TimeModel.Time, sumCount int) (*controllers.Page) {
+	list := make([]TimeDetail, 0)
+	for _, val := range models {
+		modelValue := this.renderDetail(val)
+		//todo 美句
+		list = append(list, modelValue)
+	}
+
+	page.List = list
+	return page
 }

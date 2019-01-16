@@ -13,11 +13,10 @@ type Time struct {
 	Date       string
 	Color      string
 	Remark     string
-
 	CreateTime int64
-	CreatedAt int64 `gorm:"column(create_time)"`
-	UpdatedAt int64 `gorm:"column(update_time)"`
-	DeletedAt *int64
+	CreatedAt  int64 `gorm:"column(create_time)"`
+	UpdatedAt  int64 `gorm:"column(update_time)"`
+	DeletedAt  *int64
 }
 
 func (a *Time) TableName() string {
@@ -31,4 +30,12 @@ func GetById(id string) (Time, error) {
 	err := res.Error
 
 	return ret, err
+}
+
+func GetByPage(userId string, perPage, currentPage int) (times []Time, count int, err error) {
+	offset := (currentPage - 1) * perPage
+	res := db.Conn.Where("user_id = ?", userId).Order("create_time desc").Limit(perPage).Offset(offset).Find(&times).Count(&count)
+	err = res.Error
+
+	return
 }

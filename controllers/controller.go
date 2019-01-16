@@ -21,6 +21,14 @@ type RetData struct {
 	Data interface{} `json:"data"`
 }
 
+type Page struct {
+	Count       int         `json:"count"`
+	PerPage     int         `json:"perPage"`
+	CurrentPage int         `json:"currentPage"`
+	LastPage    int         `json:"lastPage"`
+	List        interface{} `json:"list"`
+}
+
 func (c *Controller) Prepare() {
 }
 
@@ -113,4 +121,18 @@ func (c *Controller) GetData(RequestData interface{}) {
 			s.Field(i).Set(reflect.ValueOf(tmpSlice))
 		}
 	}
+}
+
+func (page *Page) RendPage(count, perPage, currentPage int) (*Page) {
+	lastPage := count / perPage
+	if count%perPage > 0 {
+		lastPage += 1
+	}
+
+	page.Count = count
+	page.PerPage = perPage
+	page.CurrentPage = currentPage
+	page.LastPage = lastPage
+
+	return page
 }

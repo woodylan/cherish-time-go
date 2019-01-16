@@ -31,6 +31,9 @@ func init() {
 			beego.NSRouter(
 				"/detail",&timeComtroller.TimeDetailController{},"*:Detail",
 			),
+			beego.NSRouter(
+				"/list",&timeComtroller.TimeListController{},"*:List",
+			),
 		),
 	)
 	beego.AddNamespace(ns)
