@@ -5,7 +5,10 @@ import (
 
 	"github.com/astaxie/beego"
 	"cherish-time-go/db"
+	"cherish-time-go/cache"
 )
+
+//var MainRedis cache.Cache
 
 func main() {
 	if beego.BConfig.RunMode == "dev" {
@@ -19,6 +22,9 @@ func main() {
 		panic(err.Error())
 	}
 	defer db.Close()
+
+	//连接redis
+	cache.Init()
 
 	beego.Run()
 }
