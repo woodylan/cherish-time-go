@@ -8,22 +8,16 @@
 package routers
 
 import (
-	"cherish-time-go/controllers"
-
-	"github.com/astaxie/beego"
+		"github.com/astaxie/beego"
 	"cherish-time-go/controllers/weapp/time"
+	"cherish-time-go/controllers/weapp/user"
 )
 
 func init() {
 	ns := beego.NewNamespace("/api/weapp/v1/",
-		beego.NSNamespace("/object",
-			beego.NSInclude(
-				&controllers.ObjectController{},
-			),
-		),
 		beego.NSNamespace("/user",
-			beego.NSInclude(
-				&controllers.UserController{},
+			beego.NSRouter(
+				"/login",&userController.UserLoginController{},"*:Login",
 			),
 		),
 
