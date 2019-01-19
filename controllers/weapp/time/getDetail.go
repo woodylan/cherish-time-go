@@ -10,10 +10,6 @@ type TimeDetailController struct {
 	controllers.Controller
 }
 
-type inputData struct {
-	Id string `data:"id" valid:"Required"`
-}
-
 func (c *TimeDetailController) Detail() {
 	inputData := struct {
 		Id string `data:"id" valid:"Required"`

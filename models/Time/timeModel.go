@@ -2,6 +2,7 @@ package TimeModel
 
 import (
 	"cherish-time-go/db"
+	"time"
 )
 
 // Model Struct
@@ -14,9 +15,9 @@ type Time struct {
 	Color      string
 	Remark     string
 	CreateTime int64
-	CreatedAt  int64 `gorm:"column(create_time)"`
-	UpdatedAt  int64 `gorm:"column(update_time)"`
-	DeletedAt  *int64
+	CreatedAt  time.Time `gorm:"column:created_at"`
+	UpdatedAt  time.Time `gorm:"column:updated_at"`
+	DeletedAt  time.Time `gorm:"column:deleted_at"`
 }
 
 func (a *Time) TableName() string {
