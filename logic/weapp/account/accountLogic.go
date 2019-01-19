@@ -2,7 +2,7 @@ package accountLogic
 
 import (
 	"github.com/medivhzhan/weapp"
-		weappUtil "github.com/medivhzhan/weapp/util"
+	weappUtil "github.com/medivhzhan/weapp/util"
 	"encoding/json"
 	"github.com/astaxie/beego/context"
 	"cherish-time-go/modules/util"
@@ -12,6 +12,7 @@ import (
 	"cherish-time-go/define/common"
 	"cherish-time-go/cache"
 	"fmt"
+	"cherish-time-go/models/Time"
 	"github.com/astaxie/beego"
 )
 
@@ -55,7 +56,9 @@ func (this *AccountLogic) Login(c *context.Context, code, iv, encryptedData stri
 		}
 		model = userModel
 
-		//todo 添加一条记录
+		//添加一条记录
+		date := time.Now().Format("20060102")
+		_, ok = TimeModel.AddNew("安装惜时光", userModel.Id, common.TIME_TYPE_ASC, date, `["#fc9e9a", "#fed89c"]`, "记下珍贵的日子")
 	} else {
 		//更新用户数据
 		UserModel.UpdateData(&model, userInfo.Nickname, userInfo.Gender, userInfo.City, userInfo.Province, userInfo.Country, userInfo.Avatar)

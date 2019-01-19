@@ -69,7 +69,7 @@ func (this *TimeLogic) renderDetail(model TimeModel.Time) (timeDetail TimeDetail
 	timeDetail.Date = model.Date
 	timeDetail.Days = days
 	timeDetail.Remark = model.Remark
-	timeDetail.CreateTime = model.CreateTime
+	timeDetail.CreateTime = model.CreatedAt.Unix()
 	return
 }
 
