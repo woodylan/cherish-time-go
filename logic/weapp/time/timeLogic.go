@@ -7,6 +7,8 @@ import (
 	"cherish-time-go/define/common"
 	"github.com/astaxie/beego"
 	"cherish-time-go/controllers"
+	"cherish-time-go/define/retcode"
+	"github.com/astaxie/beego/context"
 )
 
 type TimeLogic struct {
@@ -26,6 +28,7 @@ type TimeDetail struct {
 func (this *TimeLogic) GetDetail(id string) (timeDetail TimeDetail) {
 	model, err := TimeModel.GetById(id)
 	if err != nil {
+		//todo
 		beego.BeeLogger.Error("Error finding user with id %s: %v", id, err.Error())
 	}
 
@@ -37,11 +40,24 @@ func (this *TimeLogic) GetDetail(id string) (timeDetail TimeDetail) {
 func (this *TimeLogic) GetList(perPage, currentPage int) (page controllers.Page) {
 	models, sumCount, err := TimeModel.GetByPage("922611e8adad83fc", perPage, currentPage)
 	if err != nil {
+		//todo
 		beego.BeeLogger.Error("Error get users error: %v", err.Error())
 	}
 
 	page.RendPage(sumCount, perPage, currentPage)
 	this.renderList(&page, models, sumCount)
+
+	return
+}
+
+func (this *TimeLogic) Create(c *context.Context, name, color, date, remark string) {
+	timeType := getTypeByDate(date)
+
+	//todo UserId
+	_, ok := TimeModel.AddNew(name, "userId", timeType, date, color, remark)
+	if !ok {
+		util.ThrowApi(c, retcode.WECHAT_LOGIN_ERR, "新建记录失败")
+	}
 
 	return
 }
@@ -83,4 +99,15 @@ func (this *TimeLogic) renderList(page *controllers.Page, models []TimeModel.Tim
 
 	page.List = list
 	return page
+}
+
+//通过日期与当前日期比较，得到时间类型（正计时还是倒计时）
+func getTypeByDate(targetDate string) uint8 {
+	nowDate := time.Now().Format("20060102")
+	if targetDate > nowDate {
+		//目标日
+		return common.TIME_TYPE_DESC
+	}
+
+	return common.TIME_TYPE_ASC
 }

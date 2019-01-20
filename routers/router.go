@@ -23,10 +23,13 @@ func init() {
 
 		beego.NSNamespace("/time",
 			beego.NSRouter(
+				"/list",&timeComtroller.TimeListController{},"*:List",
+			),
+			beego.NSRouter(
 				"/detail",&timeComtroller.TimeDetailController{},"*:Detail",
 			),
 			beego.NSRouter(
-				"/list",&timeComtroller.TimeListController{},"*:List",
+				"/create",&timeComtroller.TimeCreateController{},"*:Create",
 			),
 		),
 	)
