@@ -21,7 +21,7 @@ func (c *TimeDetailController) Detail() {
 	valid.Valid(&inputData)
 
 	timeLogic := timeLogic.TimeLogic{}
-	logicRet := timeLogic.GetDetail(inputData.Id)
+	logicRet := timeLogic.GetDetail(c.Ctx, inputData.Id)
 
 	c.Data["json"] = controllers.RetData{0, "success", logicRet}
 	c.ServeJSON()

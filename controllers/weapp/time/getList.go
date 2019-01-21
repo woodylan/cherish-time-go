@@ -22,7 +22,7 @@ func (c *TimeListController) List() {
 	valid.Valid(&inputData)
 
 	timeLogic := timeLogic.TimeLogic{}
-	logicRet := timeLogic.GetList(inputData.PerPage, inputData.CurrentPage)
+	logicRet := timeLogic.GetList(c.Ctx, inputData.PerPage, inputData.CurrentPage)
 
 	c.Data["json"] = controllers.RetData{0, "success", logicRet}
 	c.ServeJSON()

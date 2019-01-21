@@ -44,7 +44,7 @@ func AddNew(name, userId string, TimeType uint8, date, color, remark string) (Ti
 func GetById(id string) (Time, error) {
 	ret := Time{Id: id}
 
-	res := db.Conn.Take(&ret)
+	res := db.Conn.Where("id = ?", id).Find(&ret)
 	err := res.Error
 
 	return ret, err
