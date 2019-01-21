@@ -20,7 +20,7 @@ func Connect() (db *gorm.DB, err error) {
 		dbPort = "3306"
 	}
 
-	dsn := dbUser + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?charset=utf8"
+	dsn := dbUser + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?charset=utf8&parseTime=true"
 	if timezone != "" {
 		dsn = dsn + "&loc=" + url.QueryEscape(timezone)
 	}
