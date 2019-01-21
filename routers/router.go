@@ -8,7 +8,7 @@
 package routers
 
 import (
-		"github.com/astaxie/beego"
+	"github.com/astaxie/beego"
 	"cherish-time-go/controllers/weapp/time"
 	"cherish-time-go/controllers/weapp/user"
 )
@@ -17,21 +17,23 @@ func init() {
 	ns := beego.NewNamespace("/api/weapp/v1/",
 		beego.NSNamespace("/user",
 			beego.NSRouter(
-				"/login",&userController.UserLoginController{},"*:Login",
+				"/login", &userController.UserLoginController{}, "*:Login",
 			),
 		),
 
 		beego.NSNamespace("/time",
 			beego.NSRouter(
-				"/list",&timeComtroller.TimeListController{},"*:List",
+				"/list", &timeComtroller.TimeListController{}, "*:List",
 			),
 			beego.NSRouter(
-				"/detail",&timeComtroller.TimeDetailController{},"*:Detail",
+				"/detail", &timeComtroller.TimeDetailController{}, "*:Detail",
 			),
 			beego.NSRouter(
-				"/create",&timeComtroller.TimeCreateController{},"*:Create",
+				"/create", &timeComtroller.TimeCreateController{}, "*:Create",
 			),
 		),
 	)
 	beego.AddNamespace(ns)
+
+	beego.InsertFilter("/time/*", beego.BeforeRouter, filterLoggedInUser)
 }
