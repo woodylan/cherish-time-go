@@ -8,7 +8,8 @@ import (
 	"cherish-time-go/controllers"
 	"cherish-time-go/define/retcode"
 	"github.com/astaxie/beego/context"
-	)
+	"cherish-time-go/global"
+)
 
 type TimeLogic struct {
 }
@@ -25,8 +26,10 @@ type TimeDetail struct {
 }
 
 func (this *TimeLogic) GetDetail(c *context.Context, id string) (timeDetail TimeDetail) {
+	LoginUserInfo := global.LoginUserInfo
+
 	model, err := TimeModel.GetById(id)
-	if err != nil {
+	if err != nil || model.UserId != LoginUserInfo.UserId {
 		util.ThrowApi(c, retcode.ERR_OBJECT_NOT_FOUND, "找不到数据"+err.Error())
 		return
 	}
@@ -37,7 +40,9 @@ func (this *TimeLogic) GetDetail(c *context.Context, id string) (timeDetail Time
 }
 
 func (this *TimeLogic) GetList(c *context.Context, perPage, currentPage int) (page controllers.Page) {
-	models, sumCount, err := TimeModel.GetByPage("922611e8adad83fc", perPage, currentPage)
+	LoginUserInfo := global.LoginUserInfo
+
+	models, sumCount, err := TimeModel.GetByPage(LoginUserInfo.UserId, perPage, currentPage)
 	if err != nil {
 		util.ThrowApi(c, retcode.ERR_OBJECT_NOT_FOUND, "找不到数据"+err.Error())
 		return
@@ -51,9 +56,10 @@ func (this *TimeLogic) GetList(c *context.Context, perPage, currentPage int) (pa
 
 func (this *TimeLogic) Create(c *context.Context, name, color, date, remark string) {
 	timeType := getTypeByDate(date)
+	LoginUserInfo := global.LoginUserInfo
 
 	//todo UserId
-	_, ok := TimeModel.AddNew(name, "userId", timeType, date, color, remark)
+	_, ok := TimeModel.AddNew(name, LoginUserInfo.UserId, timeType, date, color, remark)
 	if !ok {
 		util.ThrowApi(c, retcode.ERR_WRONG_MYSQL_OPERATE, "新建记录失败")
 	}
