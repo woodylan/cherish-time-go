@@ -15,8 +15,6 @@ type RetData struct {
 	Data interface{} `json:"data"`
 }
 
-
-
 func JsonDecode(jsonStr string, structModel interface{}) error {
 	decode := json.NewDecoder(strings.NewReader(jsonStr))
 	err := decode.Decode(structModel)
@@ -59,7 +57,7 @@ func GenShortUuid() string {
 
 func DaysDiff(startDate, endDate int64) int64 {
 	if startDate > endDate {
-		return 0
+		return -1
 	}
 
 	betweenTime := endDate - startDate

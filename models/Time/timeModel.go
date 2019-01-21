@@ -5,7 +5,7 @@ import (
 	"time"
 	"github.com/jinzhu/gorm"
 	"cherish-time-go/modules/util"
-)
+	)
 
 // Model Struct
 type Time struct {
@@ -52,7 +52,7 @@ func GetById(id string) (Time, error) {
 
 func GetByPage(userId string, perPage, currentPage int) (times []Time, count int, err error) {
 	offset := (currentPage - 1) * perPage
-	res := db.Conn.Where("user_id = ?", userId).Order("create_at desc").Limit(perPage).Offset(offset).Find(&times).Count(&count)
+	res := db.Conn.Where("user_id = ?", userId).Order("created_at desc").Limit(perPage).Offset(offset).Find(&times).Count(&count)
 	err = res.Error
 
 	return

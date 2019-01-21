@@ -9,7 +9,7 @@ import (
 	"cherish-time-go/define/retcode"
 	"github.com/astaxie/beego/context"
 	"cherish-time-go/global"
-)
+	)
 
 type TimeLogic struct {
 }
@@ -58,7 +58,6 @@ func (this *TimeLogic) Create(c *context.Context, name, color, date, remark stri
 	timeType := getTypeByDate(date)
 	LoginUserInfo := global.LoginUserInfo
 
-	//todo UserId
 	_, ok := TimeModel.AddNew(name, LoginUserInfo.UserId, timeType, date, color, remark)
 	if !ok {
 		util.ThrowApi(c, retcode.ERR_WRONG_MYSQL_OPERATE, "新建记录失败")

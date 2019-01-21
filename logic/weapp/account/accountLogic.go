@@ -75,3 +75,15 @@ func (this *AccountLogic) Login(c *context.Context, code, iv, encryptedData stri
 
 	return
 }
+
+func (this *AccountLogic) CheckAuth(c *context.Context, auth string) (authData AuthData) {
+	redis := cache.Bm.Get(auth)
+	if redis == nil {
+		util.ThrowApi(c, retcode.ERR_NO_LOGIN, "用户未登录")
+		return
+	}
+
+	util.JsonDecode(string(redis.([]byte)), &authData)
+
+	return authData
+}

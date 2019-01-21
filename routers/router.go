@@ -19,6 +19,9 @@ func init() {
 			beego.NSRouter(
 				"/login", &userController.UserLoginController{}, "*:Login",
 			),
+			beego.NSRouter(
+				"/check-auth", &userController.CheckAuthController{}, "*:CheckAuth",
+			),
 		),
 
 		beego.NSNamespace("/time",
@@ -35,5 +38,5 @@ func init() {
 	)
 	beego.AddNamespace(ns)
 
-	beego.InsertFilter("/time/*", beego.BeforeRouter, filterLoggedInUser)
+	beego.InsertFilter("*/time/*", beego.BeforeRouter, filterLoggedInUser)
 }
