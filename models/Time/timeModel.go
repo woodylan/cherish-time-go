@@ -59,6 +59,14 @@ func GetById(id string) (Time, error) {
 	return ret, err
 }
 
+func Delete(id, userId string) {
+	ret := Time{Id: id}
+
+	db.Conn.Where("id = ?", id).Where("user_id = ?", userId).Delete(&ret)
+
+	return
+}
+
 func GetByPage(userId string, perPage, currentPage int) (times []Time, count int, err error) {
 	offset := (currentPage - 1) * perPage
 	res := db.Conn.Where("user_id = ?", userId).Order("created_at desc").Limit(perPage).Offset(offset).Find(&times).Count(&count)

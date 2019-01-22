@@ -3,8 +3,7 @@ package cache
 import (
 	"github.com/astaxie/beego/cache"
 	"github.com/astaxie/beego"
-	"fmt"
-)
+	)
 
 var Bm cache.Cache
 
@@ -18,7 +17,6 @@ func Init() {
 
 	//config:=`{"key":"cherishTime","conn":"127.0.0.1:6379","dbNum":"0","password":""}`
 	config := `{"key":"` + key + `","conn":"` + host + `:` + port + `","dbNum":"0","password":"` + password + `"}`
-	fmt.Println(config)
 
 	Bm, err = cache.NewCache("redis", config)
 	if err != nil {

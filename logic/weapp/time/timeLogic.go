@@ -104,6 +104,14 @@ func (this *TimeLogic) Edit(c *context.Context, id, name string, color []string,
 	return
 }
 
+func (this *TimeLogic) Delete(c *context.Context, id string) {
+	LoginUserInfo := global.LoginUserInfo
+
+	TimeModel.Delete(id, LoginUserInfo.UserId)
+
+	return
+}
+
 func (this *TimeLogic) renderDetail(model TimeModel.Time) (timeDetail TimeDetail) {
 	color := []string{};
 	if len(model.Color) > 0 {
