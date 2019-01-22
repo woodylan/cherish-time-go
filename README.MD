@@ -1,4 +1,4 @@
-#惜时光后端程序（golang）
+# 惜时光后端程序（golang）
 
 ## 简介
 
@@ -14,9 +14,9 @@
 
 ## 使用的开源包
 
-beego：[https://github.com/astaxie/beego]()
-gorm：[https://github.com/jinzhu/gorm]()
-微信小程序 SDK：[https://github.com/medivhzhan/weapp]()
+- beego：[https://github.com/astaxie/beego](https://github.com/astaxie/beego)
+- gorm：[https://github.com/jinzhu/gorm](https://github.com/jinzhu/gorm)
+- 微信小程序 SDK：[https://github.com/medivhzhan/weapp](https://github.com/medivhzhan/weapp)
 
 
 
@@ -40,7 +40,26 @@ gorm：[https://github.com/jinzhu/gorm]()
  ```shell
    go get -u github.com/medivhzhan/weapp
  ```
-4. 配置项目
+4. 导入数据库
+
+   ~~~mysql
+   //连接数据库
+   mysql -uroot -p
+
+   //新建数据库
+   create database cherish_time;
+
+   //选择数据库
+   use cherish_time;
+
+   //设置数据库编码
+   set names utf8mb4_unicode_ci;
+
+   //导入sql文件
+   source /wwwroot/publish/cherish-time.sql;
+   ~~~
+
+5. 配置项目
 
    编辑 `conf/app.conf`
 
@@ -51,28 +70,28 @@ gorm：[https://github.com/jinzhu/gorm]()
    autorender = false
    copyrequestbody = true
    EnableDocs = true
-   
+
    # 数据库配置
-   db.host = 
-   db.user = 
-   db.password = 
+   db.host =
+   db.user =
+   db.password =
    db.port = 3306
    db.name = cherish_time
    db.prefix = tb_
    db.timezone = Asia/Shanghai
-   
+
    # Redis配置
    redis_key = cherishTime
    redis_host = 127.0.0.1
    redis_port = 6379
    redis_password =
-   
+
    # 微信小程序配置
-   weChat_mini_program_appId = 
-   weChat_mini_program_secret = 
+   weChat_mini_program_appId =
+   weChat_mini_program_secret =
    ```
 
-5. 打包发布
+6. 打包发布
 
    发布到linux
 
@@ -87,7 +106,7 @@ gorm：[https://github.com/jinzhu/gorm]()
    nohup ./cherish-time-go &
    ```
 
-6. 配置nginx
+7. 配置nginx
 
    如果你不想在域名输入端口号，有两个方法，一是用80端口运行，二是做反向代理，这里以nginx做反向代理为例。
 
