@@ -5,7 +5,7 @@ import (
 	"time"
 	"github.com/jinzhu/gorm"
 	"cherish-time-go/modules/util"
-	)
+)
 
 // Model Struct
 type Time struct {
@@ -18,8 +18,8 @@ type Time struct {
 	Remark       string
 	CreateUserId string
 	UpdateUserId string
-	CreatedAt    time.Time `gorm:"column:created_at"`
-	UpdatedAt    time.Time `gorm:"column:updated_at"`
+	CreatedAt    time.Time  `gorm:"column:created_at"`
+	UpdatedAt    time.Time  `gorm:"column:updated_at"`
 	DeletedAt    *time.Time `gorm:"column:deleted_at"`
 }
 
@@ -39,6 +39,15 @@ func AddNew(name, userId string, TimeType uint8, date string, color, remark stri
 	res := db.Conn.NewRecord(&time)
 
 	return time, !res
+}
+
+func Edit(id, name, userId string, TimeType uint8, date string, color, remark string) (Time) {
+	time := Time{Id: id, Name: name, UserId: userId, Type: TimeType, Date: date, Color: color, Remark: remark, CreateUserId: userId, UpdateUserId: userId}
+
+	db.Conn.LogMode(true)
+	db.Conn.Model(&time).Where("user_id = ? ", userId).Update(time)
+
+	return time
 }
 
 func GetById(id string) (Time, error) {

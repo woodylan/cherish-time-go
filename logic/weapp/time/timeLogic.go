@@ -89,6 +89,21 @@ func (this *TimeLogic) Create(c *context.Context, name string, color []string, d
 	return
 }
 
+func (this *TimeLogic) Edit(c *context.Context, id, name string, color []string, date, remark string) (timeDetail TimeDetail) {
+	timeType := getTypeByDate(date)
+	LoginUserInfo := global.LoginUserInfo
+
+	jsonColor, err := json.Marshal(color)
+	if err != nil {
+		return
+	}
+
+	model := TimeModel.Edit(id, name, LoginUserInfo.UserId, timeType, date, string(jsonColor), remark)
+	timeDetail = this.renderDetail(model)
+
+	return
+}
+
 func (this *TimeLogic) renderDetail(model TimeModel.Time) (timeDetail TimeDetail) {
 	color := []string{};
 	if len(model.Color) > 0 {
