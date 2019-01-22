@@ -10,6 +10,7 @@ import (
 	"github.com/astaxie/beego/context"
 	"cherish-time-go/global"
 	"cherish-time-go/models/Sentence"
+	"encoding/json"
 )
 
 type TimeLogic struct {
@@ -71,11 +72,16 @@ func (this *TimeLogic) GetList(c *context.Context, perPage, currentPage int) (pa
 	return
 }
 
-func (this *TimeLogic) Create(c *context.Context, name, color, date, remark string) {
+func (this *TimeLogic) Create(c *context.Context, name string, color []string, date, remark string) {
 	timeType := getTypeByDate(date)
 	LoginUserInfo := global.LoginUserInfo
 
-	_, ok := TimeModel.AddNew(name, LoginUserInfo.UserId, timeType, date, color, remark)
+	jsonColor, err := json.Marshal(color)
+	if err != nil {
+		return
+	}
+
+	_, ok := TimeModel.AddNew(name, LoginUserInfo.UserId, timeType, date, string(jsonColor), remark)
 	if !ok {
 		util.ThrowApi(c, retcode.ERR_WRONG_MYSQL_OPERATE, "新建记录失败")
 	}
@@ -140,7 +146,7 @@ func (this *TimeLogic) renderList(page *controllers.Page, models []TimeModel.Tim
 		timeDetail.Remark = model.Remark
 		timeDetail.Sentence = sentences[key]
 		timeDetail.CreateTime = model.CreatedAt.Unix()
-		
+
 		list = append(list, timeDetail)
 	}
 

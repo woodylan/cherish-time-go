@@ -12,11 +12,12 @@ type TimeCreateController struct {
 
 func (c *TimeCreateController) Create() {
 	inputData := struct {
-		Name   string `data:"name" valid:"Required"`
-		Color  string `data:"color" valid:"Required"`
-		Date   string `data:"date" valid:"Required"`
-		Remark string `data:"remark" valid:""`
+		Name   string   `data:"name" valid:"Required"`
+		Color  []string `data:"color" valid:"Required"`
+		Date   string   `data:"date" valid:"Required"`
+		Remark string   `data:"remark" valid:""`
 	}{}
+
 	c.GetData(&inputData)
 	c.Valid(&inputData)
 

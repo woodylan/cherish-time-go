@@ -20,7 +20,7 @@ type Time struct {
 	UpdateUserId string
 	CreatedAt    time.Time `gorm:"column:created_at"`
 	UpdatedAt    time.Time `gorm:"column:updated_at"`
-	DeletedAt    time.Time `gorm:"column:deleted_at"`
+	DeletedAt    *time.Time `gorm:"column:deleted_at"`
 }
 
 func (time *Time) BeforeCreate(scope *gorm.Scope) error {
@@ -32,7 +32,7 @@ func (a *Time) TableName() string {
 	return "tb_time"
 }
 
-func AddNew(name, userId string, TimeType uint8, date, color, remark string) (Time, bool) {
+func AddNew(name, userId string, TimeType uint8, date string, color, remark string) (Time, bool) {
 	time := Time{Name: name, UserId: userId, Type: TimeType, Date: date, Color: color, Remark: remark, CreateUserId: userId, UpdateUserId: userId}
 
 	db.Conn.Create(&time)

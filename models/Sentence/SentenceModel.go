@@ -17,7 +17,7 @@ type Sentence struct {
 	UpdateUserId string    `json:"-"`
 	CreatedAt    time.Time `gorm:"column:created_at" json:"-"`
 	UpdatedAt    time.Time `gorm:"column:updated_at" json:"-"`
-	DeletedAt    time.Time `gorm:"column:deleted_at" json:"-"`
+	DeletedAt    *time.Time `gorm:"column:deleted_at" json:"-"`
 }
 
 func (a *Sentence) TableName() string {
@@ -25,7 +25,7 @@ func (a *Sentence) TableName() string {
 }
 
 func GetRand(perPage int) (sentences []Sentence, err error) {
-	db.Conn.LogMode(true)
+	//db.Conn.LogMode(true)
 	res := db.Conn.Order("RAND()").Limit(perPage).Find(&sentences)
 	err = res.Error
 	if err == nil {

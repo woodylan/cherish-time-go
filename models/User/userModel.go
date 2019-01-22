@@ -9,17 +9,17 @@ import (
 
 // Model Struct
 type User struct {
-	Id        string    `gorm:"column(id);pk" json:"id"`
-	OpenId    string    `json:"openId"`
-	NickName  string    `json:"nickName"`
-	Sex       int       `json:"sex"`
-	City      string    `json:"city"`
-	Province  string    `json:"province"`
-	Country   string    `json:"country"`
-	Avatar    string    `json:"avatar"`
-	CreatedAt time.Time `gorm:"column:created_at" json:"-"`
-	UpdatedAt time.Time `gorm:"column:updated_at" json:"-"`
-	DeletedAt *int64    `gorm:"column:deleted_at" json:"-"`
+	Id        string     `gorm:"column(id);pk" json:"id"`
+	OpenId    string     `json:"openId"`
+	NickName  string     `json:"nickName"`
+	Sex       int        `json:"sex"`
+	City      string     `json:"city"`
+	Province  string     `json:"province"`
+	Country   string     `json:"country"`
+	Avatar    string     `json:"avatar"`
+	CreatedAt time.Time  `gorm:"column:created_at" json:"-"`
+	UpdatedAt time.Time  `gorm:"column:updated_at" json:"-"`
+	DeletedAt *time.Time `gorm:"column:deleted_at" json:"-"`
 }
 
 func (a *User) TableName() string {
