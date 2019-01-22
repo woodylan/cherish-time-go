@@ -9,7 +9,8 @@ import (
 	"cherish-time-go/define/retcode"
 	"github.com/astaxie/beego/context"
 	"cherish-time-go/global"
-	)
+	"cherish-time-go/models/Sentence"
+)
 
 type TimeLogic struct {
 }
@@ -23,6 +24,18 @@ type TimeDetail struct {
 	Days       int64    `json:"days"`
 	Remark     string   `json:"remark"`
 	CreateTime int64    `json:"createTime"`
+}
+
+type TimeListDetail struct {
+	Id         string                 `json:"id"`
+	Name       string                 `json:"name"`
+	Type       uint8                  `json:"type"`
+	Color      []string               `json:"color"`
+	Date       string                 `json:"date"`
+	Days       int64                  `json:"days"`
+	Remark     string                 `json:"remark"`
+	Sentence   SentenceModel.Sentence `json:"sentence"`
+	CreateTime int64                  `json:"createTime"`
 }
 
 func (this *TimeLogic) GetDetail(c *context.Context, id string) (timeDetail TimeDetail) {
@@ -48,8 +61,12 @@ func (this *TimeLogic) GetList(c *context.Context, perPage, currentPage int) (pa
 		return
 	}
 
+	//SentenceModel.GetRand(perPage)
+	sentences, err := SentenceModel.GetRand(perPage)
+	//fmt.Println(sentences)
+
 	page.RendPage(sumCount, perPage, currentPage)
-	this.renderList(&page, models, sumCount)
+	this.renderList(&page, models, sentences, sumCount)
 
 	return
 }
@@ -93,12 +110,38 @@ func (this *TimeLogic) renderDetail(model TimeModel.Time) (timeDetail TimeDetail
 	return
 }
 
-func (this *TimeLogic) renderList(page *controllers.Page, models []TimeModel.Time, sumCount int) (*controllers.Page) {
-	list := make([]TimeDetail, 0)
-	for _, val := range models {
-		modelValue := this.renderDetail(val)
-		//todo 美句
-		list = append(list, modelValue)
+func (this *TimeLogic) renderList(page *controllers.Page, models []TimeModel.Time, sentences []SentenceModel.Sentence, sumCount int) (*controllers.Page) {
+	nowTimeUnix := time.Now().Unix()
+
+	list := make([]TimeListDetail, 0)
+	for key, model := range models {
+		timeDetail := TimeListDetail{}
+		dateTime, _ := time.Parse("20060102", model.Date)
+		dateTimeUnix := dateTime.Unix()
+
+		days := int64(0)
+		if model.Type == common.TIME_TYPE_DESC {
+			days = util.DaysDiff(nowTimeUnix, dateTimeUnix)
+		} else if model.Type == common.TIME_TYPE_ASC {
+			days = util.DaysDiff(dateTimeUnix, nowTimeUnix)
+		}
+
+		color := []string{};
+		if len(model.Color) > 0 {
+			util.JsonDecode(model.Color, &color)
+		}
+
+		timeDetail.Id = model.Id
+		timeDetail.Name = model.Name
+		timeDetail.Type = model.Type
+		timeDetail.Color = color
+		timeDetail.Date = model.Date
+		timeDetail.Days = days
+		timeDetail.Remark = model.Remark
+		timeDetail.Sentence = sentences[key]
+		timeDetail.CreateTime = model.CreatedAt.Unix()
+		
+		list = append(list, timeDetail)
 	}
 
 	page.List = list
