@@ -45,7 +45,7 @@ func Edit(id, name, userId string, TimeType uint8, date string, color, remark st
 	time := Time{Id: id, Name: name, UserId: userId, Type: TimeType, Date: date, Color: color, Remark: remark, CreateUserId: userId, UpdateUserId: userId}
 
 	db.Conn.LogMode(true)
-	db.Conn.Model(&time).Where("user_id = ? ", userId).Update(time)
+	db.Conn.Model(&time).Where("user_id = ? ", userId).Where("id = ? ", id).Update(time)
 
 	return time
 }
